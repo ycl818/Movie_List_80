@@ -3,11 +3,14 @@ const BASE_URL = 'https://movie-list.alphacamp.io'
 const INDEX_URL = BASE_URL + '/api/v1/movies/'
 const POSTER_URL = BASE_URL + '/posters/'
 
+
+const MOVIES_PER_PAGE = 12
 const movies = JSON.parse(localStorage.getItem('favoriteMovies')) || []
-console.log(movies)
+
 const dataPanel = document.querySelector('#data-panel')
 const searchForm = document.querySelector('#search-form')
 const inputValue = document.querySelector('#search-input')
+const paginator = document.querySelector('#paginator')
 
 function renderMovieList(data) {
   let rawHTML = ''
@@ -53,13 +56,33 @@ function showMovieModal(id) {
 }
 
 
+function renderPaginator(amount) {
+  const numberOfPages = Math.ceil(amount / MOVIES_PER_PAGE)
+  // 80 / 12 = 6 ... 8 = 7
+  let rawHTML = ''
+
+  for (let page = 1; page <= numberOfPages; page++) {
+    rawHTML += `<li class="page-item"><a class="page-link" href="#" data-page='${page}'>${page}</a></li>`
+  }
+
+  paginator.innerHTML = rawHTML
+}
+
+function getMoviesByPage(page) {
+  // movies? "movies" : "filtermovies"
+  const data = movies
+
+  const startIndex = (page - 1) * MOVIES_PER_PAGE
+  return data.slice(startIndex, startIndex + MOVIES_PER_PAGE)
+}
+
 function removeFromFavorite(id) {
-  
+
   const movieIndex = movies.findIndex(movie => movie.id === id)
-  
+
   movies.splice(movieIndex, 1)
 
-  
+
   localStorage.setItem('favoriteMovies', JSON.stringify(movies))
   renderMovieList(movies)
 }
@@ -69,10 +92,16 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
     //console.log(event.target.dataset)
     showMovieModal(Number(event.target.dataset.id))
   } else if (event.target.matches('.btn-remove-favorite')) {
-   removeFromFavorite(Number(event.target.dataset.id))
+    removeFromFavorite(Number(event.target.dataset.id))
   }
 })
 
+paginator.addEventListener('click', function onPaginatorClicked(event) {
+  if (event.target.tagName !== 'A') return
+  const page = Number(event.target.dataset.page)
+  renderMovieList(getMoviesByPage(page))
+})
 
 
-renderMovieList(movies)
+renderPaginator(movies.length)
+renderMovieList(getMoviesByPage(1))
