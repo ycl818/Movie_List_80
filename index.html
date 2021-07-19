@@ -1,11 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <script src="https://kit.fontawesome.com/3cbd3faa03.js" crossorigin="anonymous"></script>
   <title>Document</title>
 </head>
 <body>
@@ -34,36 +37,32 @@
   <!-- Search Bar -->
   <div class="container">
     <div class="row">
-      <form class="row gx-3 gy-2 align-items-center" id="search-form">
-        <div class="col-sm-3">
+      <div class="col">
+        <form id="search-form" class="d-flex">
           <label class="visually-hidden" for="specificSizeInputName">Search Keyword</label>
-          <input type="text" class="form-control" id="search-input" placeholder="Keywords...">
-        </div>
+          <input type="text" class="form-control w-50" id="search-input" placeholder="Keywords...">
+          <button type="submit" class="btn btn-primary mx-2" id="search-submit">Search</button>
+        </form>
+      </div>
       
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary" id="search-submiy">Search</button>
-        </div>
-      </form>
+      <div class="col col-lg-6 text-end fs-2" id='displaySelector'>
+        <i class="fa fa-th gridMode" aria-hidden="true" ></i>
+        <i class="fa fa-bars listMode" aria-hidden="true"></i>
+      </div>
     </div>
+  </div>>
 
+
+
+
+
+
+  <div class="container"> 
     <div class="row" id="data-panel">
       <!-- Render Movie list -->
-      <div class="col-sm-3">
-        <div class="mb-2 mt-2">
-          <div class="card">
-            <img src="https://raw.githubusercontent.com/ALPHACamp/movie-list-api/master/public/posters/80PWnSTkygi3QWWmJ3hrAwqvLnO.jpg" class="card-img-top" alt="Movie Post">
-            <div class="card-body">
-              <h5 class="card-title">${item.title}</h5>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-primary btn-show-movie" data-bs-toggle="modal"
-                data-bs-target="#movie-modal">More</button>
-              <button class="btn btn-info btn-add-favorite" >+</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
+      
+    </div>
+    
       
 
     <!-- Movie Modal -->
@@ -109,9 +108,7 @@
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="index.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

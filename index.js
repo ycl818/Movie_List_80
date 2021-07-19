@@ -5,13 +5,16 @@ const MOVIES_PER_PAGE = 12
 
 const movies = []
 let filterMovies = []
-
+let style = ''
+let currentPage = 1
 
 const dataPanel = document.querySelector('#data-panel')
 const searchForm = document.querySelector('#search-form')
 const inputValue = document.querySelector('#search-input')
 const paginator = document.querySelector('#paginator')
+const displaySelector = document.querySelector('#displaySelector')
 
+// grid mode
 function renderMovieList(data) {
   let rawHTML = ''
   // processing
@@ -37,6 +40,38 @@ function renderMovieList(data) {
   dataPanel.innerHTML = rawHTML
 }
 
+// list mode 
+function renderToList(data){
+  let rawHTML =''
+  data.forEach(item => {
+    rawHTML += `
+      <div class="col-12">
+        <div class="mb-2 mt-2">
+          <div class="card  d-flex flex-row">
+            <div class="mt-2 col-8">
+               <h5 class="card-title text-center  ">${item.title}</h5>
+            </div>
+    
+            <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-primary btn-show-movie  " data-bs-toggle="modal" data-bs-target="#movie-modal"
+              data-id="${item.id}">More</button>
+              <button class="btn btn-info btn-add-favorite  " data-id="${item.id}">+</button>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    `
+  })
+  dataPanel.innerHTML = rawHTML
+}
+
+// choose mode
+function displayStyle(page) {
+  if (style === 'list') return renderToList(getMoviesByPage(page))
+  return renderMovieList(getMoviesByPage(page))
+}
+
 function renderPaginator(amount) {
   const numberOfPages = Math.ceil(amount / MOVIES_PER_PAGE)
   // 80 / 12 = 6 ... 8 = 7
@@ -47,6 +82,7 @@ function renderPaginator(amount) {
   }
 
   paginator.innerHTML = rawHTML
+  
 }
 
 // page 1 -> movies 0 - 11
@@ -104,8 +140,8 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
 
 paginator.addEventListener('click', function onPaginatorClicked(event) {
   if (event.target.tagName !== 'A') return
-  const page = Number(event.target.dataset.page)
-  renderMovieList(getMoviesByPage(page))
+  currentPage = Number(event.target.dataset.page)
+  displayStyle(currentPage)
 })
 
 searchForm.addEventListener('submit', function(event) {
@@ -113,7 +149,7 @@ searchForm.addEventListener('submit', function(event) {
   // console.log(event) 
   
   const keywords = inputValue.value.trim().toLowerCase()
- 
+  currentPage = 1
   filterMovies = movies.filter(function(movie){
     return movie.title.toLowerCase().includes(keywords)
   })
@@ -123,8 +159,21 @@ searchForm.addEventListener('submit', function(event) {
   }
 
   renderPaginator(filterMovies.length)
-  renderMovieList(getMoviesByPage(1))
+  displayStyle(currentPage)
 })
+
+//監聽切換模式
+displaySelector.addEventListener('click', function(event){
+  console.log(event.target)
+  if (event.target.matches('.gridMode')) {
+    style = 'grid'
+    displayStyle(currentPage)
+  } else {
+    style = 'list'
+    displayStyle(currentPage)
+  }
+})
+
 
 axios.get(INDEX_URL).then((response) => {
   //console.log(response.data.results)
